@@ -12,10 +12,7 @@ end entity;
 
 architecture behave of half_subtractor is
 begin
-    process(a, b)
-    begin
-        diff <= a xor b;
-        borrow <= (a xor b) and b;
-    end process;
+    diff <= a xor b;
+    borrow <= (a xor b) and b;
 
 end behave;
