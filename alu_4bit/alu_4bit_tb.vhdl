@@ -42,28 +42,29 @@ begin
 
                     case s_sel is
                         when "0000" => 
-                            expected := j + k;
-                            report integer'image(to_integer(unsigned(s_a))) & "+" & integer'image(to_integer(unsigned(s_b))) & "=" & 
-                            integer'image(to_integer(unsigned(s_alu)));
+                            expected := to_integer(unsigned(resize(unsigned(s_a), 5)) + unsigned(resize(unsigned(s_b), 5)));
                             assert to_integer(unsigned(s_alu)) = expected
                                 report "[ADD]: " & integer'image(to_integer(unsigned(s_a))) & "+" & integer'image(to_integer(unsigned(s_b))) & "=" & 
                                     integer'image(to_integer(unsigned(s_alu))) & " expected " & integer'image(expected)
                                 severity error;
                         when "0001" =>
-                            expected := to_integer(unsigned(s_a) - unsigned(s_b)) mod 32;
-                            assert to_integer(unsigned(s_alu)) = expected
-                                report "[SUB]: " & integer'image(to_integer(unsigned(s_a))) & "-" & integer'image(to_integer(unsigned(s_b))) & "=" & 
-                                    integer'image(to_integer(unsigned(s_alu))) & " expected " & integer'image(expected)
+                            expected := to_integer(signed(resize(unsigned(s_a), 5)) - signed(resize(unsigned(s_b), 5)));
+
+                            assert to_integer(signed(s_alu)) = expected
+                                report "[SUB]: " & integer'image(to_integer(unsigned(s_a))) & " - " & 
+                                                integer'image(to_integer(unsigned(s_b))) & " = " &
+                                                integer'image(to_integer(signed(s_alu))) & ", expected " & 
+                                                integer'image(expected)
                                 severity error;
                         when "0010" => 
-                            expected := to_integer(unsigned(s_a) - 1) mod 32;
-                            assert to_integer(unsigned(s_alu)) = expected
+                            expected := to_integer(signed(to_signed(to_integer(unsigned(s_a)), 5) - to_signed(1, 5)));
+                            assert to_integer(signed(s_alu)) = expected
                                 report "[-1]: " & integer'image(to_integer(unsigned(s_a))) & "-1=" & 
                                     integer'image(to_integer(unsigned(s_alu))) & " expected " & integer'image(expected)
                                 severity error;
                         when "0011" => 
-                            expected := to_integer(unsigned(s_a) + 1) mod 32;
-                            assert to_integer(unsigned(s_alu)) = expected
+                            expected := to_integer(signed(to_signed(to_integer(unsigned(s_a)), 5) + to_signed(1, 5)));
+                            assert to_integer(signed(s_alu)) = expected
                                 report "[+1]: " & integer'image(to_integer(unsigned(s_a))) & "+1=" & 
                                     integer'image(to_integer(unsigned(s_alu))) & " expected " & integer'image(expected)
                                 severity error;
