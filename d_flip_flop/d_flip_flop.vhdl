@@ -17,8 +17,8 @@ begin
             q <= '0';
             not_q <= '1';
         elsif rising_edge(clk) then
-            not_q <= d;
-            q <= not d;
+            not_q <= not d;
+            q <= d;
         end if;
     end process;
 end behave;
