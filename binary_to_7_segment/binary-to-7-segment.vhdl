@@ -15,7 +15,6 @@ entity binary_to_7_segment is
 end entity;
 
 architecture behave of binary_to_7_segment is
-    signal byte: std_logic_vector(7 downto 0) := "00000000";
     signal clk,reset: std_logic:='0';
 
     function nibble7seg(nibble: std_logic_vector(3 downto 0)) return std_logic_vector is
@@ -42,19 +41,18 @@ architecture behave of binary_to_7_segment is
     end function;
 
 begin
-    byte <= sw(7 downto 0);
-    led(7 downto 0) <= byte;
+    led <= sw;
     reset<=key(0);
     clk<=clk500Hz;
 
-    process(byte, reset)
+    process(sw, reset)
     begin
         if reset = '0' then
             hex1<=nibble7seg("0000");
             hex0<=nibble7seg("0000");
         else
-            hex1<=nibble7seg(byte(7 downto 4));
-            hex0<=nibble7seg(byte(3 downto 0));
+            hex1<=nibble7seg(sw(7 downto 4));
+            hex0<=nibble7seg(sw(3 downto 0));
         end if;
 
     end process;
